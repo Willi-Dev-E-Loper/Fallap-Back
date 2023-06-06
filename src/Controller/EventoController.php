@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Evento;
+use App\Entity\Usuario;
 use App\Repository\EventoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -117,7 +118,9 @@ class EventoController extends AbstractController
 
             $evento = $doctrine->getRepository(Evento::class)->find($id);
             $idUsuario= json_decode($content, true);
-            $evento->setParticipantes($idUsuario['idUsuario']);
+            $usuario = $doctrine->getRepository(Usuario::class)->find($idUsuario);
+            dump($idUsuario);
+            $evento->addParticipante($usuario);
 
             $entityManager = $doctrine->getManager();
             $entityManager->flush();

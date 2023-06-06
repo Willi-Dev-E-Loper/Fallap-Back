@@ -37,6 +37,8 @@ class Encuesta
     #[ORM\JoinColumn(referencedColumnName: "id_falla")]
     private ?Falla $falla = null;
 
+
+
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $respuestas = [];
 

@@ -115,28 +115,30 @@ class FallaController extends AbstractController
 
     }
 
-    #[Rest\Put('/{id<\d+>}', name: 'edit_falla')]
+    #[Rest\Post('/{id<\d+>}', name: 'edit_falla')]
     public function editFalla(ManagerRegistry $doctrine, Request $request, $id=''): JsonResponse {
 
-        try {
-            $content = $request->getContent();
 
+        try {
+            $data = $request->request->all();
+            $portada = $request->files->get('imagenPortada');
+            $logo = $request->files->get('logoFalla');
             $falla = $doctrine->getRepository(Falla::class)->find($id);
-            $falla->fromJson($content, $doctrine);
+            $falla->fromFormData($data, $portada, $logo);
 
             $entityManager = $doctrine->getManager();
+            $entityManager->persist($falla);
             $entityManager->flush();
+
 
             $response = [
                 'ok' => true,
-                'message' => 'contact updated',
+                'message' => 'event updated',
             ];
         } catch (\Throwable $e) {
             $response = [
                 'ok' => false,
-                'error' => 'Failed to update contact: '.$e->getMessage(),
-
-
+                'error' => 'Failed to update event: '.$e->getMessage(),
             ];
         }
 

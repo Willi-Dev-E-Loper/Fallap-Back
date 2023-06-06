@@ -65,7 +65,7 @@ class EncuestaController extends AbstractController
         return new JsonResponse($response);
     }
 
-    #[Rest\Put('/{id<\d+>}', name: 'edit_encuesta')]
+    #[Rest\Post('/{id<\d+>}', name: 'edit_encuesta')]
     public function editEncuesta(ManagerRegistry $doctrine, Request $request, $id=''): JsonResponse {
 
         try {

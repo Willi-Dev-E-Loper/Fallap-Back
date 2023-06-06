@@ -20,9 +20,15 @@ class Noticia
     #[ORM\Column(type: Types::TEXT)]
     private ?string $contenido = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagen = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $fechaNoticia = null;
+
+    #[ORM\ManyToOne(inversedBy: 'noticias')]
+    #[ORM\JoinColumn(referencedColumnName: "id_falla")]
+    private ?Falla $falla = null;
 
 
 
@@ -74,6 +80,18 @@ class Noticia
 
         return $this;
     }
+    public function getFechaNoticia():string
+    {
+        return $this->fechaNoticia;
+    }
+
+    public function setFechaNoticia(string $fechaNoticia): self
+    {
+        $this->fechaNoticia = $fechaNoticia;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return [
@@ -81,6 +99,7 @@ class Noticia
             'titulo' => $this->titulo,
             'contenido' => $this->contenido,
             'imagen' => $this->imagen,
+            'fechaNoticia'=>$this->fechaNoticia
         ];
     }
     public function fromJson($content): void
@@ -91,7 +110,36 @@ class Noticia
         $this->contenido = $content['contenido'] ?? null;
         $this->imagen = $content['imagen'] ?? null;
     }
+    public function fromFormData($data, $file, $fileUploader, $doctrine): void
+    {
+        dump($data);
+        $this->contenido = $data['descripcionNoticia'] ;
+        $this->titulo = $data['tituloNoticia'] ;
+        $this->fechaNoticia = $data['fechaCreacion'] ;
+        dump($data['descripcionNoticia']);
+        if(isset($data['idFalla'])){
+            $this->falla = $doctrine->getRepository(Falla::class)->find($data['idFalla']);
+        }
 
+
+        if ($file) {
+            $imagenPath = $fileUploader->upload($file);
+            $this->imagen = $imagenPath;
+        }
+
+    }
+
+    public function getFalla(): ?Falla
+    {
+        return $this->falla;
+    }
+
+    public function setFalla(?Falla $falla): self
+    {
+        $this->falla = $falla;
+
+        return $this;
+    }
 
 
 

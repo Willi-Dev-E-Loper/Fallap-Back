@@ -56,6 +56,7 @@ class Falla
     #[ORM\OneToMany(mappedBy: 'falla', targetEntity: Evento::class)]
     private Collection $eventos;
 
+
     #[ORM\OneToMany(mappedBy: 'falla', targetEntity: Usuario::class)]
     private Collection $falleros;
 
@@ -74,6 +75,10 @@ class Falla
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $fechaCreacion = null;
 
+    #[ORM\OneToMany(mappedBy: 'falla', targetEntity: Noticia::class)]
+    #[ORM\JoinColumn(referencedColumnName: "id_noticia")]
+    private Collection $noticias;
+
 
     public function __construct(FileUploader $fileUploader)
     {
@@ -82,6 +87,7 @@ class Falla
         $this->eventos = new ArrayCollection();
         $this->falleros = new ArrayCollection();
         $this->fileUploader = $fileUploader;
+        $this->noticias = new ArrayCollection();
 
     }
 
@@ -300,6 +306,7 @@ class Falla
         return $this;
     }
 
+
     public function removeFallero(Usuario $fallero): self
     {
         if ($this->falleros->removeElement($fallero)) {
@@ -373,6 +380,11 @@ class Falla
         foreach ($this->eventos as $evt){
             $events[]= $evt->toArray();
         }
+        $noticias=[];
+        foreach ($this->noticias as $evt){
+            $noticias[]= $evt->toArray();
+        }
+        dump($this->getNoticias());
         $falleros=[];
         foreach ($this->falleros as $fall){
             $roles=[];
@@ -402,6 +414,7 @@ class Falla
             'web' => $this->sitioWeb,
             'fechaCreacion' => $this->fechaCreacion,
             'comentarios' => $coments,
+            'noticias' => $noticias,
             'encuestas' => $encuestas,
             'eventos' => $events,
             'falleros' => $falleros,
@@ -495,6 +508,36 @@ class Falla
     public function setFechaCreacion(?string $fechaCreacion): self
     {
         $this->fechaCreacion = $fechaCreacion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Noticia>
+     */
+    public function getNoticias(): Collection
+    {
+        return $this->noticias;
+    }
+
+    public function addNoticia(Noticia $noticia): self
+    {
+        if (!$this->noticias->contains($noticia)) {
+            $this->noticias->add($noticia);
+            $noticia->setFalla($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoticia(Noticia $noticia): self
+    {
+        if ($this->noticias->removeElement($noticia)) {
+            // set the owning side to null (unless already changed)
+            if ($noticia->getFalla() === $this) {
+                $noticia->setFalla(null);
+            }
+        }
 
         return $this;
     }

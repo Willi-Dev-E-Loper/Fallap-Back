@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comentario;
 use App\Entity\Noticia;
+use App\Repository\ComentarioRepository;
 use App\Repository\NoticiaRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,30 +42,31 @@ class NoticiaController extends AbstractController
     }
 
     #[Rest\Post('/new', name: 'app_noticia_new')]
-    public function new(Request $request, NoticiaRepository $noticiaRepository, ManagerRegistry $doctrine): Response
+    public function new(Request $request, comentarioRepository $comentarioRepository, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
 
         try {
-            $content = $request->getContent();
-            $noticium = new Noticia();
-            $noticium->fromJson($content);
+            $data = $request->request->all();
+            $file = $request->files->get('file');
+            $notice = new Noticia($doctrine);
+            $notice->fromFormData($data, $file, $fileUploader, $doctrine);
 
             $entityManager = $doctrine->getManager();
-            $entityManager->persist($noticium);
+            $entityManager->persist($notice);
             $entityManager->flush();
 
-                $response = [
-                       'ok' => true,
-                        'message' => 'contact inserted',
-                ];
-            } catch (\Throwable $e) {
-                   $response = [
-                       'ok' => false,
-                       'error' => 'Failed to insert contact: '.$e->getMessage(),
-                       ];
-            }
+            $response = [
+                'ok' => true,
+                'message' => 'notice inserted',
+            ];
+        } catch (\Throwable $e) {
+            $response = [
+                'ok' => false,
+                'error' => 'Failed to insert notice: '.$e->getMessage(),
+            ];
+        }
 
-            return new JsonResponse($response);
+        return new JsonResponse($response);
     }
 
     #[Rest\Put('/{id<\d+>}', name: 'edit_noticia')]
