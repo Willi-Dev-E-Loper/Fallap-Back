@@ -60,6 +60,27 @@ class FallaController extends AbstractController
 
         return new JsonResponse($response);
     }
+    #[Rest\Get('/noticias', name: 'falla_api_noticias')]
+    public function getNoticias(FallaRepository $fallaRepository): JsonResponse
+    {
+        $falla = $fallaRepository->find(99999);
+        $noticias = $falla->getNoticias();
+        $not = [];
+        foreach ($noticias as $noticia){
+            $not[] = $noticia->toArray();
+        };
+        if (count($not) > 0) {
+
+            $response =  $not;
+        } else {
+            $response = [
+                'ok' => false,
+                'error' => 'No se han encontrado noticias',
+            ];
+        }
+
+        return new JsonResponse($response);
+    }
     #[Rest\Get('/falleros/{id<\d+>}', name: 'falla_api_falleros')]
     public function getFalleros(FallaRepository $fallaRepository, $id=''): JsonResponse
     {

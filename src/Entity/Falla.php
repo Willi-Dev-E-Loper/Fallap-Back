@@ -396,9 +396,6 @@ class Falla
                             'role' => $roles];
         }
 
-
-
-
         return [
             'idFalla' => $this->idFalla,
             'nombre' => $this->nombre,
