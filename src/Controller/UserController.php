@@ -92,7 +92,7 @@ class UserController extends AbstractController
                                 'Name' => $noticium->getNombre()
                             ]
                         ],
-                        'Subject' => "Hola follero, aqui tienes tus credenciales!!",
+                        'Subject' => "Hola fallero, aqui tienes tus credenciales!!",
                         'TextPart' => "",
                         'HTMLPart' => '<p>¡Bienvenido/a! Tu cuenta ha sido creada exitosamente.</p>
                                         <p>Tus credenciales de inicio de sesión son:</p>
@@ -157,7 +157,7 @@ class UserController extends AbstractController
                                     'Name' => $usuario->getNombre()
                                 ]
                             ],
-                            'Subject' => "Hola follero, aqui tienes tus credenciales!!",
+                            'Subject' => "Hola fallero, aqui tienes tus credenciales!!",
                             'TextPart' => "",
                             'HTMLPart' => '<p>¡Bienvenido/a! Tu cuenta ha sido creada exitosamente.</p>
                                         <p>Tus credenciales de inicio de sesión son:</p>

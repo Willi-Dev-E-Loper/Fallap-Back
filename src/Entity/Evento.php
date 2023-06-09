@@ -44,7 +44,7 @@ class Evento
     private ?bool $tienePago = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $contador = null;
+    private ?int $contador = 0;
 
     #[ORM\Column(nullable: true)]
     private ?int $pago = null;
@@ -59,11 +59,13 @@ class Evento
     #[ORM\OneToMany(mappedBy: 'pago', targetEntity: Usuario::class)]
     private Collection $pagadores;
 
+
     public function __construct(FileUploader $fileUploader, ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->participantes = new ArrayCollection();
         $this->pagadores = new ArrayCollection();
+
     }
 
     public function getIdEvento(): ?int
@@ -159,9 +161,9 @@ class Evento
         return $this->contador;
     }
 
-    public function setContador(int $contador): self
+    public function setContador(): self
     {
-        $this->contador = $contador;
+        $this->contador += 1;
 
         return $this;
     }
@@ -319,8 +321,6 @@ class Evento
         //$this->pagos = $formData->get('pagos') ? $entityManager->getRepository(Pago::class)->find($formData->get('pagos')) : null;
         //$this->falla = $formData->get('falla') ? $entityManager->getRepository(Falla::class)->find($formData->get('falla')) : null;
     }
-
-
 
 
 }

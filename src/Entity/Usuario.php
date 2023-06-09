@@ -38,15 +38,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $apellidos = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $nombreUsuario = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $descripcion = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto = null;
-
 
     #[ORM\Column(nullable: true)]
     private ?int $telefono = null;
@@ -71,7 +62,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-
 
     }
 
@@ -180,41 +170,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getNombreUsuario(): ?string
-    {
-        return $this->nombreUsuario;
-    }
-
-    public function setNombreUsuario(string $nombreUsuario): self
-    {
-        $this->nombreUsuario = $nombreUsuario;
-
-        return $this;
-    }
-
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    public function setDescripcion(?string $descripcion): self
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    public function getFoto()
-    {
-        return $this->foto;
-    }
-
-    public function setFoto($foto): self
-    {
-        $this->foto = $foto;
-
-        return $this;
-    }
 
 
 
@@ -270,7 +225,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
             'roles' => $this->roles,
             'nombre' => $this->nombre,
             'apellidos' => $this->apellidos,
-            'descripcion' => $this->descripcion,
             'telefono' => $this->telefono,
             'idAdmin' => $this->idAdmin,
             'falla' => $idfalla,

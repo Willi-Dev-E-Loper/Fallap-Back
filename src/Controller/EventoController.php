@@ -120,7 +120,39 @@ class EventoController extends AbstractController
             $idUsuario= json_decode($content, true);
             $usuario = $doctrine->getRepository(Usuario::class)->find($idUsuario);
             dump($idUsuario);
+            $evento->setContador();
+
+            $entityManager = $doctrine->getManager();
+            $entityManager->flush();
+
+            $response = [
+                'ok' => true,
+                'message' => 'event updated',
+
+            ];
+        } catch (\Throwable $e) {
+            $response = [
+                'ok' => false,
+                'error' => 'Failed to update event: '.$e->getMessage(),
+
+
+            ];
+        }
+
+        return new JsonResponse($response);
+    }
+    #[Rest\Put('/setPagador/{id<\d+>}', name: 'set_pagador_evento')]
+    public function setPagador(ManagerRegistry $doctrine, Request $request, $id=''): JsonResponse {
+
+        try {
+            $content = $request->getContent();
+
+            $evento = $doctrine->getRepository(Evento::class)->find($id);
+            $idUsuario= json_decode($content, true);
+            $usuario = $doctrine->getRepository(Usuario::class)->find($idUsuario);
+            dump($idUsuario);
             $evento->addParticipante($usuario);
+            $evento->addPagadore($usuario);
 
             $entityManager = $doctrine->getManager();
             $entityManager->flush();

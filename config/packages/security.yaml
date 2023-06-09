@@ -41,19 +41,24 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        #- { path: ^/api/login, roles: PUBLIC_ACCESS }
-        #- { path: ^/api/user/importCsv, roles: ROLE_SUPER_ADMIN }
-        #- { path: ^/api/falla/setPremios, roles: ROLE_SUPER_ADMIN }
-        #- { path: ^/api/user/setRole, roles: ROLE_SUPER_ADMIN }
-        #- { path: ^/api/(noticia|falla), roles: ROLE_USER, methods: [GET] }
-        #- { path: ^/api/(noticia|falla|user), roles: ROLE_SUPER_ADMIN, methods: [GET, PUT, POST, DELETE] }
-        #- { path: ^/api/user/new, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
-        #- { path: ^/api/(comentario|evento|encuesta), roles: ROLE_USER, methods: [GET]}
-        #- { path: ^/api/(comentario|evento|encuesta), roles: ROLE_ADMIN }
-        #- { path: ^/api/evento/setParticipante, roles: ROLE_USER }
-        #- { path: ^/api/pago/setPagador, roles: ROLE_USER }
-        ## - { path: ^/api/encuesta/setRespuesta, roles: ROLE_USER }
-        #- { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/falla/noticias, roles: ROLE_USER, methods: [GET] }
+        - { path: ^/api/falla/select, roles: ROLE_USER, methods: [GET] }
+        - { path: ^/api/user, roles: ROLE_USER, methods: [GET] }
+        - { path: ^/api/user/new, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+        - { path: ^/api/user/importCsv, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+        - { path: ^/api/falla/llibret, roles: ROLE_ADMIN }
+        - { path: ^/api/falla, roles: ROLE_ADMIN, methods:[POST] }
+        - { path: ^/api/falla/setPremios, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/api/user/setRole, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/api/(noticia|falla), roles: ROLE_USER, methods: [GET] }
+        - { path: ^/api/(noticia|falla|user), roles: ROLE_SUPER_ADMIN, methods: [GET, PUT, POST, DELETE] }
+        - { path: ^/api/(comentario|evento|encuesta), roles: ROLE_USER, methods: [GET]}
+        - { path: ^/api/(comentario|evento|encuesta), roles: ROLE_ADMIN }
+        #- { path: ^/api/evento/setParticipante, roles: ROLE_USER, methods: [PUT] }
+        - { path: ^/api/pago/setPagador, roles: ROLE_USER }
+        - { path: ^/api/encuesta/setRespuesta, roles: ROLE_USER }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
